@@ -32,6 +32,10 @@ dependencies {
     implementation 'org.redisson:redisson-spring-boot-starter:3.33.0'
     //h2
     runtimeOnly 'com.h2database:h2'
+    // poi
+    implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

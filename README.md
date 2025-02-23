@@ -40,7 +40,8 @@
 - Id, Name, Amount을 가지며, 상품의 정보 및 재고량을 관리합니다.
 ---
 # API 명세서
-
+[Product.http](./http/Product.http)  
+[Order.http](./http/Order.http)
 ## 1. 상품 생성 API
 
 - **요청 URL**: `/api/product`
@@ -153,7 +154,7 @@
   
 ---
 
-## 5. 주문 API
+## 5. 주문 생성 API
 
 - **요청 URL**: `/api/order`
 - **HTTP 메서드**: `POST`
@@ -198,7 +199,35 @@
   
 ---
 
-## 6. 주문 조회 API
+## 6. excel로 주문 생성 API
+
+- **요청 URL**: `/api/order/excel/upload`
+- **HTTP 메서드**: `POST`
+- **요청 형식**: MultiPart
+- **요청 본문**:
+```json
+  {
+      "orderer": "홍길동",
+      "ordererAddress": "서울특별시 강남구",
+      "excel": file
+  }
+```
+- **요청 설명**:
+  - `orderer`: 주문자명 (필수)
+  - `ordererAddress`: 주문자 주소 (필수)
+  - `excel`: 주문 상품정보 [sample excel](./src/main/resources/sample/store_order_excel_ssample.xlsx)
+
+- **응답 형식**: 없음
+- **응답 상태 코드**: `200 OK`
+- **응답 설명**: 주문이 성공적으로 등록되었습니다.
+
+- **에러 응답**:
+  - **400 Bad Request**: 잘못된 요청, 주문한 상품이 잘못된 경우
+  - **404 Not Found**: 해당 상품이 존재하지 않음
+
+---
+
+## 7. 주문 조회 API
 
 - **요청 URL**: `/api/order/{orderId}`
 - **HTTP 메서드**: `GET`
@@ -254,17 +283,19 @@
 
 ## API 요약
 
-| **API**      | **HTTP Method** | **URL**                    | **Description** | **Status Code** | **Request Body**                                    | **Response**                                                                             |
-|--------------|-----------------|----------------------------|-----------------|-----------------|-----------------------------------------------------|------------------------------------------------------------------------------------------|
-| **상품 생성**    | `POST`          | `/api/product`             | 상품 생성           | `200 OK`        | `{ "name": "상품 이름", "quantity": 10, "price": 1000 }` | 없음                                                                                       |
-| **상품 조회**    | `GET`           | `/api/product/{productId}` | 특정 상품 조회        | `200 OK`        | 없음                                                  | `{ "id": 1, "name": "상품 이름", "quantity": 10, "price": 1000 }`                            |
-| **모든 상품 조회** | `GET`           | `/api/product`             | 모든 상품 조회        | `200 OK`        | 없음                                                  | `[ { "id": 1, "name": "상품 이름", "quantity": 10, "price": 1000 }, ... ]`                   |
-| **상품 수량 증가** | `PATCH`         | `/api/product/increase`    | 상품 수량 증가        | `200 OK`        | `{ "productId": 1, "quantity": 5 }`                 | 없음                                                                                       |
-| **주문 생성**    | `POST`          | `/api/order`               | 주문 생성           | `200 OK`        | `{"orderer": "주문자명", "ordererAddress": "주문자 주소", "orderProducts: [주문 상품들...]"}`| 없음                                                                                       |
-| **주문 조회**    | `GET`           | `/api/order/{orderId}`     | 특정 주문 조회        | `200 OK`        | 없음                                                  | `{"id": 1, "orderer": "주문자명", "ordererAddress": "주문자 주소", "orderProducts: [주문 상품들...]"}` |
+| **API**          | **HTTP Method** | **URL**                    | **Description** | **Status Code** | **Request Body**                                                                | **Response**                                                   |
+|------------------|-----------------|----------------------------|-----------------|-----------------|---------------------------------------------------------------------------------|----------------------------------------------------------------|
+| **상품 생성**        | `POST`          | `/api/product`             | 상품 생성           | `200 OK`        | `{ "name": "상품 이름", "quantity": 10, "price": 1000 }`                            | 없음                                                             |
+| **상품 조회**        | `GET`           | `/api/product/{productId}` | 특정 상품 조회        | `200 OK`        | 없음                                                                              | `{ "id": 1, "name": "상품 이름", "quantity": 10, "price": 1000 }`  |
+| **모든 상품 조회**     | `GET`           | `/api/product`             | 모든 상품 조회        | `200 OK`        | 없음                                                                              | `[ { "id": 1, "name": "상품 이름", "quantity": 10, "price": 1000 }, ... ]` |
+| **상품 수량 증가**     | `PATCH`         | `/api/product/increase`    | 상품 수량 증가        | `200 OK`        | `{ "productId": 1, "quantity": 5 }`                                             | 없음                                                             |
+| **주문 생성**        | `POST`          | `/api/order`               | 주문 생성           | `200 OK`        | `{"orderer": "주문자명", "ordererAddress": "주문자 주소", "orderProducts: [주문 상품들...]"}` | 없음                                                             |
+| **excel로 주문 생성** | `POST`          | `/api/order/excel/upload`  | excel로 주문 생성    | `200 OK`        | Multipart                                                                       | 없음                                                             |
+| **주문 조회**        | `GET`           | `/api/order/{orderId}`     | 특정 주문 조회        | `200 OK`        | 없음                                                                              | `{"id": 1, "orderer": "주문자명", "ordererAddress": "주문자 주소", "orderProducts: [주문 상품들...]"}` |
 
 
 ---
 
 # ERD
 
+![img.png](./src/main/resources/images/erd.png)

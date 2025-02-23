@@ -17,6 +17,8 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Version
+    private Integer version = 0;
     @Column(nullable = false, name = "상품 명")
     private String name;
     @Column(nullable = false, name = "재고")
@@ -27,6 +29,7 @@ public class Product {
     public static Product of(String name, Long quantity, Long price) {
         return Product.builder()
                 .name(name)
+                .version(0)
                 .quantity(quantity)
                 .price(price)
                 .build();

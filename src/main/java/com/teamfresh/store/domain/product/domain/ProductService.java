@@ -3,6 +3,7 @@ package com.teamfresh.store.domain.product.domain;
 import com.teamfresh.store.domain.product.domain.aggregate.Product;
 import com.teamfresh.store.domain.product.infra.ProductRepository;
 import com.teamfresh.store.global.exception.dto.CustomGlobalException;
+import com.teamfresh.store.global.redis.annotation.RedisLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +53,6 @@ public class ProductService {
         product.increaseStock(quantity);
     }
 
-    // 분산락 적용
     @Transactional
     public void decreaseProducts(Map<Long, Long> orderProducts) {
         List<Product> products = findAllByIds(orderProducts.keySet());
