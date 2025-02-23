@@ -1,0 +1,25 @@
+### 주문 생성 (Create Order)
+POST http://localhost:8080/api/order
+Content-Type: application/json
+
+{
+  "orderer": "홍길동",
+  "ordererAddress": "서울특별시 강남구",
+  "orderProducts": [
+    {
+      "productId": 1,
+      "productName": "노트북",
+      "quantity": 2,
+      "price": 100
+    },
+    {
+      "productId": 2,
+      "productName": "무선 마우스",
+      "quantity": 1,
+      "price": 100
+    }
+  ]
+}
+
+### 특정 주문 조회 (Get Order by ID)
+GET http://localhost:8080/api/order/1
